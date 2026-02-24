@@ -1,0 +1,25 @@
+# Dependencias locales (muy importante omitirlas)
+node_modules
+npm-debug.log
+
+# Carpetas de compilación local
+dist
+build
+
+# Archivos de entorno y secretos (¡Seguridad!)
+.env
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Otros
+README.md
+.vscode
