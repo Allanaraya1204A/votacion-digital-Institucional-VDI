@@ -43,8 +43,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          # SOLO sube a Docker Hub si estamos en la rama main
+          # Solo sube a Docker Hub si estamos en la rama main
           push: ${{ github.ref == 'refs/heads/main' }}
-          # Aquí está el truco para que NO falle en las features:
           tags: |
             ${{ github.ref == 'refs/heads/main' && format('{0}/votacion-vdi:latest', secrets.DOCKERHUB_USERNAME) || 'votacion-vdi:test' }}
+            ${{ github.ref == 'refs/heads/main' && format('{0}/votacion-vdi:v{1}', secrets.DOCKERHUB_USERNAME, github.run_number) || '' }}
