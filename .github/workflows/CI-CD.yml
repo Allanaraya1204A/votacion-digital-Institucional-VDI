@@ -49,4 +49,6 @@ jobs:
           context: .
           # Solo hace el push real si estamos en la rama main
           push: ${{ github.ref == 'refs/heads/main' }}
-          tags: ${{ secrets.DOCKER_USERNAME }}/votacion-vdi:latest
+          # Aquí corregimos el error de la diagonal:
+          tags: |
+            ${{ secrets.DOCKER_USERNAME != '' && format('{0}/votacion-vdi:latest', secrets.DOCKER_USERNAME) || 'votacion-vdi:local' }}
