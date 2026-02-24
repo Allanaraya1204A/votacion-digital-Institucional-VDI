@@ -1,0 +1,114 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["partialIndexes"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model auditoria {
+  id          Int       @id @default(autoincrement())
+  usuario_id  Int?
+  accion      String    @db.VarChar(100)
+  descripcion String
+  fecha       DateTime  @default(now()) @db.Timestamp(6)
+  usuarios    usuarios? @relation(fields: [usuario_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model autorizaciones_voto {
+  id             Int          @id @default(autoincrement())
+  estudiante_id  Int
+  dispositivo_id Int          @unique(map: "unique_dispositivo_autorizacion_activa", where: raw("(usada = false)"))
+  eleccion_id    Int
+  creada_en      DateTime     @default(now()) @db.Timestamp(6)
+  expira_en      DateTime     @db.Timestamp(6)
+  usada          Boolean      @default(false)
+  dispositivos   dispositivos @relation(fields: [dispositivo_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  elecciones     elecciones   @relation(fields: [eleccion_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  estudiantes    estudiantes  @relation(fields: [estudiante_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([estudiante_id], map: "idx_autorizaciones_estudiante")
+}
+
+model candidaturas {
+  id          Int        @id @default(autoincrement())
+  eleccion_id Int
+  nombre      String     @db.VarChar(150)
+  descripcion String
+  imagen_url  String
+  elecciones  elecciones @relation(fields: [eleccion_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  votos       votos[]
+}
+
+model dispositivos {
+  id                  Int                  @id @default(autoincrement())
+  mesa_id             Int
+  nombre              String               @db.VarChar(100)
+  ip                  String               @unique @db.VarChar(50)
+  activo              Boolean              @default(true)
+  autorizaciones_voto autorizaciones_voto?
+  mesas               mesas                @relation(fields: [mesa_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  votos               votos[]
+
+  @@index([ip], map: "idx_dispositivos_ip")
+}
+
+model elecciones {
+  id                  Int                   @id @default(autoincrement())
+  nombre              String                @db.VarChar(150)
+  fecha               DateTime              @db.Date
+  activa              Boolean               @default(true)
+  autorizaciones_voto autorizaciones_voto[]
+  candidaturas        candidaturas[]
+  votos               votos[]
+}
+
+model estudiantes {
+  id                  Int                   @id @default(autoincrement())
+  codigo              String                @unique @db.VarChar(50)
+  nombres             String                @db.VarChar(150)
+  apellidos           String                @db.VarChar(150)
+  grado               String                @db.VarChar(50)
+  ya_voto             Boolean               @default(false)
+  autorizaciones_voto autorizaciones_voto[]
+
+  @@index([codigo], map: "idx_estudiantes_codigo")
+}
+
+model mesas {
+  id           Int            @id @default(autoincrement())
+  nombre       String         @db.VarChar(100)
+  descripcion  String
+  activa       Boolean        @default(true)
+  dispositivos dispositivos[]
+}
+
+model roles {
+  id       Int        @id @default(autoincrement())
+  nombre   String     @unique @db.VarChar(50)
+  usuarios usuarios[]
+}
+
+model usuarios {
+  id            Int         @id @default(autoincrement())
+  nombre        String      @db.VarChar(100)
+  email         String      @unique @db.VarChar(150)
+  password_hash String
+  rol_id        Int
+  auditoria     auditoria[]
+  roles         roles       @relation(fields: [rol_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model votos {
+  id             Int          @id @default(autoincrement())
+  candidatura_id Int
+  eleccion_id    Int
+  dispositivo_id Int
+  fecha          DateTime     @default(now()) @db.Timestamp(6)
+  candidaturas   candidaturas @relation(fields: [candidatura_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  dispositivos   dispositivos @relation(fields: [dispositivo_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  elecciones     elecciones   @relation(fields: [eleccion_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([candidatura_id], map: "idx_votos_candidatura")
+}
