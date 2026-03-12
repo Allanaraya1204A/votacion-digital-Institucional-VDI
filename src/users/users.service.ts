@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, DeleteUserResponse,UpdateUser, CreateUser} from './interface-users';
@@ -9,14 +9,22 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
   constructor(private prisma: PrismaService) { }
 
-  async create(createUserDto: CreateUserDto): Promise<CreateUser> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const hashedPassword = await bcrypt.hash(createUserDto.password_hash, 10);
-    return this.prisma.usuarios.create({
+    const user = await this.prisma.usuarios.create({
       data: {
-        ...createUserDto,
-        password_hash: hashedPassword
-      }
+        nombre: createUserDto.nombre,
+        email: createUserDto.email,
+        password_hash: hashedPassword,
+        rol_id: createUserDto.rol_id,
+      },
     });
+    return {
+      id: user.id,
+      nombre: user.nombre,
+      email: user.email,
+      rol_id: user.rol_id,
+    };
   }
 
   async findAll(): Promise<User[]> {
@@ -53,6 +61,7 @@ export class UsersService {
     });
     
     return {
+      id: user.id,
       nombre: user.nombre,
       email: user.email,
       rol_id: user.rol_id,
@@ -70,8 +79,24 @@ export class UsersService {
       message: 'User deleted successfully',
       data: {
         id: user.id,
-        nombre: user.nombre
+        nombre: user.nombre,
       }
     };
   }
+
+
+async findByEmail(email: string) {
+  const user = await this.prisma.usuarios.findUnique({
+    where: { email },
+    include: {
+      roles: true, // Esto carga toda la relación del rol (id y nombre)
+    },
+  });
+
+  if (!user) {
+    throw new UnauthorizedException('El correo electrónico no existe.');
+  }
+
+  return user;
+}
 }

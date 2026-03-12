@@ -6,6 +6,10 @@ import { UsersModule } from './users/users.module';
 import { PrismaClientExceptionFilter } from './common/filters/prisma-client-exception.filter';
 import { APP_FILTER, APP_PIPE} from '@nestjs/core/constants';
 import { ValidationPipe } from '@nestjs/common';
+import { AutModule } from './aut/aut.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AutGuard } from './aut/aut.guard';
+import { RolesGuard } from './aut/guards/roles.guard';
 
 @Module({
   imports: [
@@ -16,6 +20,7 @@ import { ValidationPipe } from '@nestjs/common';
     PrismaModule,
     RolesModule,
     UsersModule,
+    AutModule,
   ],
   controllers: [],
   providers: [
@@ -30,6 +35,14 @@ import { ValidationPipe } from '@nestjs/common';
         forbidNonWhitelisted: true,
         transform: true,
       }),
+    },
+
+    {
+      provide: APP_GUARD,
+      useClass: AutGuard,
+    },  
+    {      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
     
   ],
