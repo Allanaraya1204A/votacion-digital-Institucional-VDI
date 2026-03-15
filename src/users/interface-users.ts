@@ -4,13 +4,6 @@ export interface User {
   email: string;
  rol_id: number;
 }
-
-export interface CreateUser {
-  nombre: string;
-  email: string;
-  password_hash: string;
-  rol_id: number;
-}
 export interface DeleteUserResponse {
   success: boolean;
   message: string;
