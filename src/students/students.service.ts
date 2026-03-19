@@ -18,15 +18,7 @@ export class StudentsService {
         grado: createStudentDto.grado
       },
     });
-
-    return {
-      id: student.id,
-      codigo: student.codigo,
-      nombres: student.nombres,
-      apellidos: student.apellidos,
-      grado: student.grado,
-      ya_voto: student.ya_voto,
-    };
+    return student;
   }
 
   async findAll(): Promise<Student[]> {
