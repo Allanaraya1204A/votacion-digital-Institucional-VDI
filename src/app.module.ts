@@ -12,6 +12,7 @@ import { AutGuard } from './aut/aut.guard';
 import { RolesGuard } from './aut/guards/roles.guard';
 import { StudentsModule } from './students/students.module';
 import { MesasModule } from './mesas/mesas.module';
+import { DevicesModule } from './devices/devices.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { MesasModule } from './mesas/mesas.module';
     AutModule,
     StudentsModule,
     MesasModule,
+    DevicesModule,
   ],
   controllers: [],
   providers: [
