@@ -7,6 +7,7 @@ import { DeleteResponse, Devices } from './interface-devices';
 @Injectable()
 export class DevicesService {
   constructor(private prisma: PrismaService) {}
+  
   async create(createDeviceDto: CreateDeviceDto): Promise<Devices> {
     const device = await this.prisma.dispositivos.create({
       data: createDeviceDto,
