@@ -13,6 +13,7 @@ import { RolesGuard } from './aut/guards/roles.guard';
 import { StudentsModule } from './students/students.module';
 import { MesasModule } from './mesas/mesas.module';
 import { DevicesModule } from './devices/devices.module';
+import { ElectionsModule } from './elections/elections.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { DevicesModule } from './devices/devices.module';
     StudentsModule,
     MesasModule,
     DevicesModule,
+    ElectionsModule,
   ],
   controllers: [],
   providers: [
