@@ -14,6 +14,7 @@ import { StudentsModule } from './students/students.module';
 import { MesasModule } from './mesas/mesas.module';
 import { DevicesModule } from './devices/devices.module';
 import { ElectionsModule } from './elections/elections.module';
+import { CandidatesModule } from './candidates/candidates.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ElectionsModule } from './elections/elections.module';
     MesasModule,
     DevicesModule,
     ElectionsModule,
+    CandidatesModule,
   ],
   controllers: [],
   providers: [
