@@ -3,6 +3,7 @@ import { CandidatesService } from './candidates.service';
 import { CreateCandidateDto } from './dto/create-candidate.dto';
 import { UpdateCandidateDto } from './dto/update-candidate.dto';
 import { Roles } from 'src/aut/decorators/roles.decorator';
+import { get } from 'http';
 
 @Roles('ADMIN') // Solo los usuarios con el rol 'ADMIN' pueden acceder a este controlador y sus rutas
 @Controller('candidates')
@@ -22,6 +23,11 @@ export class CandidatesController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.candidatesService.findOne(+id);
+  }
+
+  @Get('eleccion/:eleccion_id')
+  findbyeleccion(@Param('eleccion_id') eleccion_id: string) {
+    return this.candidatesService.findbyeleccion(+eleccion_id);
   }
 
   @Patch(':id')

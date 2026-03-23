@@ -26,6 +26,13 @@ export class CandidatesService {
     return candidate;
   }
 
+  async findbyeleccion(eleccion_id: number) : Promise<Candidate[]> {
+    const candidates = await this.prisma.candidaturas.findMany({
+      where: { eleccion_id },
+    });
+    return candidates;
+  }
+
   async update(id: number, updateCandidateDto: UpdateCandidateDto) : Promise<Candidate> {
     const candidate = await this.prisma.candidaturas.update({
       where: { id },
