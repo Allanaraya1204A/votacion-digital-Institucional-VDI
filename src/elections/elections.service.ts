@@ -49,5 +49,7 @@ export class ElectionsService {
     });
     return election;
   }
+
+  
 }
 

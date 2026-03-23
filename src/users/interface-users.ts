@@ -11,7 +11,7 @@ export interface DeleteUserResponse {
 }
 
 export interface UpdateUser {
-  id: number;
+    id: number;
     nombre: string;
     email: string;
     rol_id: number;
