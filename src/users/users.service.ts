@@ -52,21 +52,35 @@ export class UsersService {
       rol_id: user.rol_id,
     };
   }
+async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  // 1. Preparamos un objeto con los datos básicos
+  const data: any = {
+    nombre: updateUserDto.nombre,
+    email: updateUserDto.email,
+    rol_id: updateUserDto.rol_id,
+  };
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<UpdateUser> {
-    const user = await this.prisma.usuarios.update({
-      where: { id },
-      data: {...updateUserDto
-      },
-    });
-    
-    return {
-      id: user.id,
-      nombre: user.nombre,
-      email: user.email,
-      rol_id: user.rol_id,
-    };
+  // 2. Solo hasheamos si el usuario envió una nueva contraseña
+  if (updateUserDto.password_hash) {
+    data.password_hash = await bcrypt.hash(updateUserDto.password_hash, 10);
   }
+
+  // 3. Ejecutamos la actualización con los campos que existan
+  const user = await this.prisma.usuarios.update({
+    where: { id },
+    data: data,
+  });
+
+  // 4. Retornamos el objeto limpio (sin el hash)
+  return {
+    id: user.id,
+    nombre: user.nombre,
+    email: user.email,
+    rol_id: user.rol_id,
+  };
+}
+
+    
 
   async remove(id: number): Promise<DeleteUserResponse> {
     

@@ -3,13 +3,14 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Roles } from 'src/aut/decorators/roles.decorator';
+import { Public } from 'src/aut/decorators/public.decorator';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Public()
   @Post()
-  @Roles('ADMIN') 
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }

@@ -1,0 +1,33 @@
+import { Controller, Post, Body, Get } from '@nestjs/common';
+import { VotingService } from './voting.service';
+import { AuthorizeVotingDto } from './dto/AuthorizeVotingDto';
+import { CastVoteDto } from './dto/CastVoteDto';
+
+@Controller('voting')
+export class VotingController {
+  constructor(private readonly votingService: VotingService) {}
+
+  // 🔒 Autorizar voto
+  @Post('authorize')
+  authorize(@Body() dto: AuthorizeVotingDto) {
+    return this.votingService.authorizeVoting(
+      dto.estudiante_id,
+      dto.dispositivo_id,
+    );
+  }
+
+  // 🗳️ Emitir voto
+  @Post('cast')
+  castVote(@Body() dto: CastVoteDto) {
+    return this.votingService.castVote(
+      dto.candidatura_id,
+      dto.dispositivo_id,
+    );
+  }
+
+  // 📊 Obtener resultados
+  @Get('results')
+  getResults() {
+    return this.votingService.getResults();
+  }
+}

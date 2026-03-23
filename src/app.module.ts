@@ -15,6 +15,7 @@ import { MesasModule } from './mesas/mesas.module';
 import { DevicesModule } from './devices/devices.module';
 import { ElectionsModule } from './elections/elections.module';
 import { CandidatesModule } from './candidates/candidates.module';
+import { VotingModule } from './voting/voting.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { CandidatesModule } from './candidates/candidates.module';
     DevicesModule,
     ElectionsModule,
     CandidatesModule,
+    VotingModule,
   ],
   controllers: [],
   providers: [
