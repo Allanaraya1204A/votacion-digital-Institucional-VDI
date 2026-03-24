@@ -9,7 +9,7 @@ export class VotingService {
     private auditService: AuditService
   ) {}
 
-  // 🔒 AUTORIZAR VOTO
+  // AUTORIZAR VOTO
   async authorizeVoting(
     estudiante_id: number,
     dispositivo_id: number,
