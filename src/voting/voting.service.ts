@@ -13,7 +13,7 @@ export class VotingService {
   async authorizeVoting(
     estudiante_id: number,
     dispositivo_id: number,
-    usuario_id: number // 👈 admin que autoriza
+    usuario_id: number 
   ) {
     return this.prisma.$transaction(async (tx) => {
 
