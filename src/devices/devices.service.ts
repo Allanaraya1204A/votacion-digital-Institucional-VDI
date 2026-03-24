@@ -27,6 +27,13 @@ export class DevicesService {
     return device;  
   }
 
+  async findbymesa(id_mesa: number): Promise<Devices[]> {
+    const devices = await this.prisma.dispositivos.findMany({
+      where: { mesa_id: id_mesa },
+    });
+    return devices;  
+  }
+
   async update(id: number, updateDeviceDto: UpdateDeviceDto): Promise<Devices> {
     const device = await this.prisma.dispositivos.update({
       where: { id },

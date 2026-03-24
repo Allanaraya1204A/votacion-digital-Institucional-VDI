@@ -5,24 +5,23 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Roles } from 'src/aut/decorators/roles.decorator';
 import { Public } from 'src/aut/decorators/public.decorator';
 
+@Roles('ADMIN') 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
+
   @Get()
   findAll() {
-
     return this.usersService.findAll();
   }
   
-  @Get(':id') // Protegemos la ruta
-  @Roles('ADMIN') // Solo los usuarios con rol "ADMIN" pueden acceder
+  @Get(':id') 
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
