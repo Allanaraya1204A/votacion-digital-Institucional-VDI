@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { MesasService } from './mesas.service';
 import { CreateMesaDto } from './dto/create-mesa.dto';
 import { UpdateMesaDto } from './dto/update-mesa.dto';
+import { Roles } from 'src/aut/decorators/roles.decorator';
 
+@Roles('ADMIN')
 @Controller('mesas')
 export class MesasController {
   constructor(private readonly mesasService: MesasService) {}
@@ -12,6 +14,7 @@ export class MesasController {
     return this.mesasService.create(createMesaDto);
   }
 
+  @Roles('SUPERVISOR', 'ADMIN')
   @Get()
   findAll() {
     return this.mesasService.findAll();

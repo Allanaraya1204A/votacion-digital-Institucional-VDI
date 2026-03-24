@@ -4,11 +4,11 @@ import { CreateDeviceDto } from './dto/create-device.dto';
 import { UpdateDeviceDto } from './dto/update-device.dto';
 import { Roles } from 'src/aut/decorators/roles.decorator';
 
+@Roles('ADMIN')
 @Controller('devices')
 export class DevicesController {
-  constructor(private readonly devicesService: DevicesService) {}
+  constructor(private readonly devicesService: DevicesService) { }
 
-  @Roles('ADMIN')
   @Post()
   create(@Body() createDeviceDto: CreateDeviceDto) {
     return this.devicesService.create(createDeviceDto);
@@ -23,8 +23,12 @@ export class DevicesController {
   findOne(@Param('id') id: string) {
     return this.devicesService.findOne(+id);
   }
+  @Roles('SUPERVISOR', 'ADMIN')
+  @Get('mesa/:id_mesa')
+  findbymesa(@Param('id_mesa') id_mesa: string) {
+    return this.devicesService.findbymesa(+id_mesa);
+  }
 
-  @Roles('ADMIN') 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateDeviceDto: UpdateDeviceDto) {
     return this.devicesService.update(+id, updateDeviceDto);
@@ -35,7 +39,6 @@ export class DevicesController {
     return this.devicesService.updateStatus(+id, activo);
   }
 
-  @Roles('ADMIN')
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.devicesService.remove(+id);
