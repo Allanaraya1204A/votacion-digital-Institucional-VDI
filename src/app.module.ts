@@ -16,6 +16,7 @@ import { DevicesModule } from './devices/devices.module';
 import { ElectionsModule } from './elections/elections.module';
 import { CandidatesModule } from './candidates/candidates.module';
 import { VotingModule } from './voting/voting.module';
+import { AuditModule } from './audit/audit.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { VotingModule } from './voting/voting.module';
     ElectionsModule,
     CandidatesModule,
     VotingModule,
+    AuditModule,
   ],
   controllers: [],
   providers: [

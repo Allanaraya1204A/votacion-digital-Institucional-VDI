@@ -1,22 +1,25 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Req } from '@nestjs/common';
 import { VotingService } from './voting.service';
 import { AuthorizeVotingDto } from './dto/AuthorizeVotingDto';
 import { CastVoteDto } from './dto/CastVoteDto';
 
 @Controller('voting')
 export class VotingController {
-  constructor(private readonly votingService: VotingService) {}
+  constructor(private readonly votingService: VotingService) { }
 
-  // 🔒 Autorizar voto
+  //  Autorizar voto
   @Post('authorize')
-  authorize(@Body() dto: AuthorizeVotingDto) {
+  authorize(@Body() dto, @Req() req) {
+    const userId = req.user.sub;
+
     return this.votingService.authorizeVoting(
       dto.estudiante_id,
       dto.dispositivo_id,
+      userId
     );
   }
 
-  // 🗳️ Emitir voto
+  // Emitir voto
   @Post('cast')
   castVote(@Body() dto: CastVoteDto) {
     return this.votingService.castVote(
@@ -25,7 +28,7 @@ export class VotingController {
     );
   }
 
-  // 📊 Obtener resultados
+  // Obtener resultados
   @Get('results')
   getResults() {
     return this.votingService.getResults();
